@@ -1,4 +1,4 @@
 <?php
 
-echo 'testando envio de arquivo';
+echo 'testando envio de arquivos';
 ?>
