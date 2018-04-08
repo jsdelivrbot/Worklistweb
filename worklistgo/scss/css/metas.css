@@ -1,0 +1,61 @@
+
+    .img-logo{
+    height: 41px;
+    width: 200px;
+    display: block;
+    background: url('../img/dflogo.svg') no-repeat;
+    background-size: contain;/* contain define o tamanho informado acima */
+    color: transparent;  
+    margin-left: 8px;
+}
+
+    .cabecalho_indicador{
+        background-color: #f7f7f7;
+    }
+    
+
+
+
+#mainNav{
+    background: linear-gradient(45deg, #003147 0%,#005074 100%);    
+}
+.small, small{
+    color: white;
+}
+.li-login{
+    border-bottom: 1px solid #b6b6b6;
+}
+.texto-login{
+  display: block;  
+  text-align: center;
+}
+
+
+@media screen and (max-width: 767px){
+    
+    .card-body{
+        padding: 2px;
+    }
+    
+    .table td{
+        padding: 0px;   
+        font-size: 0.7em;
+    }
+     .table th{
+        padding: 3px 0px;
+        font-size: 0.7em;
+    }
+    
+    #dataTable_length,#dataTable_info,#dataTable_paginate,#dataTable_filter{
+        display: none;
+    }
+    
+.container-fluid {
+    width: 100%;
+    padding-right: 7px;
+    padding-left: 7px;
+    margin-right: auto;
+    margin-left: auto;
+    
+}
+}

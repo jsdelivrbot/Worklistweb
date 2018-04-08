@@ -1,0 +1,420 @@
+<?php
+// chamar criador de sessão de login
+session_start();
+if ($_SESSION['logado'] != "SIM") {
+    header('Location: login.php');
+}
+?>
+
+<!DOCTYPE html>
+<html lang="pt">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="O Worklist é um sistema de monitoramento de indicadores de vendas." content="">
+        <meta name="Worknet" content="Worknet">
+        <link rel="icon" href="img/favicon.png"> <!--Coloca Icone da aba do navegador-->
+        <title>Worklist - DF Distribuidora</title>
+        <!-- Bootstrap core CSS-->
+        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom fonts for this template-->
+        <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <!-- Page level plugin CSS-->
+        <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+        <!-- Custom styles for this template-->
+
+        <link href="css/sb-admin.css" rel="stylesheet">
+        <link href="css/metas.css" rel="stylesheet">
+        <link href="css/carteira.css" rel="stylesheet">
+        <link href="css/visaoegarra.css" rel="stylesheet">
+        <script src="js/jquery-3.2.1.js"></script>
+    </head>
+
+    <script>
+        $(document).ready(function () {
+            $("#btn_atualizar").click(function () {
+                var iddocliente = $(".select_cliente").val();
+
+                atualizaPainelDanone();
+                atualizaCobertura();
+                atualizaSellout();
+                if (iddocliente == 1) {
+                    atualizaDn();
+                    $("#grafselloutatu").show();
+                    $('#graficoselloutdanone').remove();
+                    $('#graficoselloutatual').append('<canvas id="graficoselloutdanone" width="100" height="50"></canvas>');
+
+                    $("#dnpositivacli").show();
+                    $("#graficodncli").show();
+                    $('#graficodndanone').remove();
+                    $('#graficodnatual').append('<canvas id="graficodndanone" width="100" height="50"></canvas>');
+
+                    $("#grafcobmulatu").show();
+                    $('#graficocoberturadanone').remove();
+                    $('#graficocoberturaatual').append('<canvas id="graficocoberturadanone" width="100" height="50"></canvas>');
+
+                } else {
+                    $("#grafselloutatu").hide();
+                    $("#dnpositivacli").hide();
+                    $("#graficodncli").hide();
+                    $("#grafcobmulatu").hide();
+                }
+                blacklist();
+            })
+
+            $("#btn_cobertura").click(function () {
+                filtroCobertura();
+            })
+
+            function atualizaPainelDanone() {
+                var mes = $("#select_mes").val();
+                var iddocliente = $(".select_cliente").val();
+                $.post('classes/sql_danone.php', {mes: mes, idcliente: iddocliente}, function (data) {
+
+                    $("#paineldanone").empty();
+                    $("#paineldanone").html(data);
+                })
+            }
+
+            function atualizaCobertura() {
+                var mes = $("#select_mes").val();
+                var iddocliente = $(".select_cliente").val();
+                $.post('classes/sql_coberturamultipladanone.php', {mes: mes, idcliente: iddocliente}, function (data) {
+                    $("#coberturamultipla").empty();
+                    $("#coberturamultipla").html(data);
+                })
+
+            }
+            function atualizaDn() {
+                var mes = $("#select_mes").val();
+                var iddocliente = $(".select_cliente").val();
+                $.post('classes/dn.php', {mes: mes, idcliente: iddocliente}, function (data) {
+                    // $("#paineldn").empty();
+                    $("#paineldn").html(data);
+                })
+            }
+            function blacklist() {
+                var mes = $("#select_mes").val();
+                var iddocliente = $(".select_cliente").val();
+                $.post('classes/sql_blacklist.php', {mes: mes, idcliente: iddocliente}, function (data) {
+                    if (data == 0) {
+                        $("#blacklistatu").hide();
+                    } else {
+                        $("#blacklistatu").show();
+                        $("#blacklist").empty();
+                        $("#blacklist").html(data);
+                    }
+                })
+            }
+
+            $("#pesquisaclienteblack").keyup(function () {
+                var index = $(this).parent().index();
+                var nth = "#tableblacklist td:nth-child(" + (index + 1).toString() + ")";
+                var valor = $(this).val().toUpperCase();
+                $("#tableblacklist tbody tr").show();
+                $(nth).each(function () {
+                    if ($(this).text().toUpperCase().indexOf(valor) < 0) {
+                        $(this).parent().hide();
+                    }
+                });
+            });
+
+            $("#pesquisaclientecobmult").keyup(function () {
+                var index = $(this).parent().index();
+                var nth = "#tablecobertura td:nth-child(" + (index + 1).toString() + ")";
+                var valor = $(this).val().toUpperCase();
+                $("#tablecobertura tbody tr").show();
+                $(nth).each(function () {
+                    if ($(this).text().toUpperCase().indexOf(valor) < 0) {
+                        $(this).parent().hide();
+                    }
+                });
+            });
+
+            function atualizaSellout() {
+                var industria2 = 2009578;
+                var iddocliente = $(".select_cliente").val();
+                $.post('classes/sql_sellout.php', {industriaselecionada2: industria2, idcliente: iddocliente}, function (data) {
+                    $("#selloutatualiza").empty();
+                    $("#selloutatualiza").html(data);
+                })
+                $('#myBarChart2').remove();
+                $('#graficosellout').append('<canvas id="myBarChart2" width="100" height="50"></canvas>');
+            }
+        })
+
+    </script>
+
+    <body class="fixed-nav sticky-footer bg-dark" id="page-top">
+        <!-- Navigation-->
+        <?PHP
+        include_once 'menu.php';
+        include_once './funcoes/funcoes.php';
+        ?>
+        <div class="content-wrapper">
+            <div class="container-fluid">
+                <div class="container"><!-- Inicio do divisão framework -->
+                    <div class="row"> <!-- Inicio row framework -->
+                        <div class="col-xl-7 col-lg-9 col-md-12 col-sm-12 "> <!-- Inicio coluna framework -->
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <i class="fa fa-table"></i> Parâmetros da Análise
+                                </div>
+                                <div class="card-body">
+                                    <div  class="table-responsive dataTables_wrapper form-inline dt-bootstrap no-footer">
+
+                                        <select id="select_mes" style="width: 20%; color: #295ba6; font-weight: bold;">
+                                            <?php
+                                            atualizaMeses(3);
+                                            ?>
+                                        </select>                                   
+                                        <select class="select_cliente" style="width: 62%; margin-left: 1%;">
+                                            <option value="1">TODOS</option>
+                                            <?php
+                                            require_once 'classes/bd.php';
+                                            $bd = new bd();
+                                            $queryindustrias = "select
+                                                    idcli,
+                                                    razao_social
+                                                    from 
+                                                    sys_clientes a,
+                                                    sys_carteira b
+                                                    where
+                                                    a.idcli = b.idcliente and
+                                                    b.idvendedor = " . $_SESSION['idrepresentante'] .
+                                                    " ORDER BY razao_social";
+                                            $resultindustrias = pg_query($queryindustrias);
+                                            while ($rowindustrias = pg_fetch_array($resultindustrias)) {
+                                                echo "<option value ='" . $rowindustrias['idcli'] . "'>" . $rowindustrias['razao_social'] . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                        <i class="fa fa-refresh" id="btn_atualizar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Example DataTables Card-->
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <i class="fa fa-table"></i> Sell-Out
+                                </div>
+                                <div class="card-body">
+                                    <div  class="table-responsive dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                        <table class="table table-bordered dataTable no-footer" id="dataTable" width="100%" cellspacing="0" style="text-align: left;">
+                                            <tbody id="paineldanone">
+
+                                            </tbody>                               
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="card-footer small text-muted">Atualizado Hoje</div>
+                            </div>
+                            <div class="card mb-3" id="dnpositivacli">
+                                <div class="card-header">
+                                    <i class="fa fa-table"></i> DN - Positivação
+                                </div>
+                                <div class="card-body">
+                                    <div  class="table-responsive dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                        <table class="table table-bordered dataTable no-footer" id="dataTable" width="100%" cellspacing="0" style="text-align: left;">
+                                            <tbody id="paineldn">
+
+                                            </tbody>                               
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="card-footer small text-muted">Atualizado Hoje</div>
+                            </div>
+
+                            <div class="card mb-3" id="grafselloutatu">
+                                <div class="card-header">
+                                    <i class="fa fa-calendar"></i> Gráfico Sell-out
+                                </div>
+                                <div class="card-body">
+                                    <div  class="table-responsive dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                    </div>
+                                    <div class="card-body" id="graficoselloutatual">
+                                        <canvas id="graficoselloutdanone" width="100" height="50"></canvas>
+                                    </div>
+                                </div>
+                                <div class="card-footer small text-muted">Atualizado Hoje</div>
+                            </div>
+
+                            <div class="card mb-3" id="graficodncli">
+                                <div class="card-header">
+                                    <i class="fa fa-calendar"></i> Gráfico DN
+                                </div>
+                                <div class="card-body">
+                                    <div  class="table-responsive dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                    </div>
+                                    <div class="card-body" id="graficodnatual">
+                                        <canvas id="graficodndanone" width="100" height="50"></canvas>
+                                    </div>
+                                </div>
+                                <div class="card-footer small text-muted">Atualizado Hoje</div>
+                            </div>
+
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <i class="fa fa-calendar"></i> Indicador de Sell-Out Mensal
+                                </div>
+                                <div class="card-body">
+                                    <div  class="table-responsive dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                        <table class="table table-bordered dataTable no-footer" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr class="cabecalho_indicador">
+                                                    <?php
+                                                    atualizaMesesTitulo(4);
+                                                    ?>
+                                                    <th>MÉDIA</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="selloutatualiza">                    
+
+                                            </tbody>                               
+                                        </table>
+                                    </div>
+                                    <div class="card-body" id="graficosellout">
+                                        <canvas id="myBarChart2" width="100" height="50"></canvas>
+                                    </div>
+                                </div>
+                                <div class="card-footer small text-muted">Atualizado Hoje</div>
+                            </div>
+
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <i class="fa fa-table"></i> Cobertura Múltipla Danone
+                                </div>
+                                <div class="card-body">
+
+                                    <div  class="table-responsive dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                        <div>
+                                            <input type="text" id="pesquisaclientecobmult" placeholder="Pesquisar Cliente"style="width: 100%; margin-top: 7px;">
+                                        </div>
+                                        <span class="legenda_indus"> </span>
+
+                                        <table class="table table-bordered dataTable no-footer" id="tablecobertura" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr class="cabecalho_indicador" >
+                                                    <th align="center">CLIENTE</th>
+                                                    <th align="center">APT1</th>
+                                                    <th align="center">APT2</th>
+                                                    <th align="center">APT3</th>
+                                                    <th align="center">APTAR</th>
+                                                    <th align="center">APTSJ</th>
+                                                    <th align="center">PRO1</th>
+                                                    <th align="center">GUM</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="coberturamultipla">
+
+                                            </tbody>                               
+                                        </table>
+
+                                    </div>
+                                </div>
+                                <div class="card-footer small text-muted">Atualizado Hoje</div>
+                            </div>
+
+                            <div class="card mb-3" id="grafcobmulatu">
+                                <div class="card-header">
+                                    <i class="fa fa-calendar"></i> Gráfico de Cobertura Múltipla Danone
+                                </div>
+                                <div class="card-body">
+                                    <div  class="table-responsive dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                    </div>
+                                    <div class="card-body" id="graficocoberturaatual">
+                                        <canvas id="graficocoberturadanone" width="100" height="50"></canvas>
+                                    </div>
+                                </div>
+                                <div class="card-footer small text-muted">Atualizado Hoje</div>
+                            </div>
+
+
+                            <div class="card mb-3" id="blacklistatu">
+                                <div class="card-header">
+                                    <i class="fa fa-table"></i> Black-List Danone
+                                </div>
+                                <div class="card-body">
+
+                                    <div  class="table-responsive dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                        <div>
+                                            <input type="text" id="pesquisaclienteblack" placeholder="Pesquisar Cliente"style="width: 100%;     margin-top: 7px;">
+                                        </div>
+                                        <span class="legenda_indus"> </span>
+
+                                        <table class="table table-bordered dataTable no-footer" id="tableblacklist" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr class="cabecalho_indicador" >
+                                                    <th align="center">CLIENTE</th>
+                                                    <th align="center">>VENDA</th>
+                                                    <th align="center">MÉDIA</th>
+                                                    <?php
+                                                    atualizaMesesTitulo(0);
+                                                    ?>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="blacklist">
+
+                                            </tbody>                               
+                                        </table>
+
+                                    </div>
+                                </div>
+                                <div class="card-footer small text-muted">Atualizado Hoje</div>
+                            </div>                            
+
+                        </div><!-- Inicio coluna framework -->
+                    </div><!-- Inicio row framework -->
+                </div><!-- Inicio divisao framework -->
+            </div>  
+            <footer class="sticky-footer" id="mainNav">
+                <div class="container">
+                    <div class="text-center">
+                        <small>Copyright © Worknet - 2017</small>
+                    </div>
+                </div>
+            </footer>
+            <!-- Scroll to Top Button-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fa fa-angle-up"></i>
+            </a>
+
+            <!-- Logout Modal-->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Deseja Sair?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Selecione "Sair" se você estiver pronto para terminar sua sessão atual.</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                            <a class="btn btn-primary" href="login.php">Sair</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bootstrap core JavaScript-->
+            <script src="vendor/jquery/jquery.min.js"></script>
+            <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <!-- Core plugin JavaScript-->
+            <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+            <!-- Page level plugin JavaScript-->
+            <script src="vendor/chart.js/Chart.min.js"></script>
+            <script src="vendor/datatables/jquery.dataTables.js"></script>
+            <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+            <!-- Custom scripts for all pages-->
+            <script src="js/sb-admin.min.js"></script>
+            <!-- Custom scripts for this page-->
+            <script src="js/sbs-admin-datatables.min.js"></script>
+        </div>
+    </body>
+
+</html>

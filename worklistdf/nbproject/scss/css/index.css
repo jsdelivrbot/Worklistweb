@@ -1,0 +1,58 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 02/11/2017, 14:03:19
+    Author     : DanielNovais
+*/
+
+
+#mainNav{
+    background: linear-gradient(45deg, #003147 0%,#005074 100%);    
+}
+
+.li-login{
+    border-bottom: 1px solid #b6b6b6;
+}
+
+
+.img-logo{
+    height: 41px;
+    width: 200px;
+    display: block;
+    background: url('../img/dflogo.svg') no-repeat;
+    background-size: contain;/* contain define o tamanho informado acima */
+    color: transparent;  
+    margin-left: 8px;
+}
+.text-center{
+    color: black;
+}
+
+.content-wrapper {
+    padding-top: 0px;
+}
+
+.small, small{
+    color: white;
+}
+
+@media screen and (max-width: 767px){
+    .banner_pg_inicial{
+        width: 100%;
+    }
+
+    .container-fluid {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+    /*.content-wrapper {
+        background: #343a40 !important;
+    }
+    footer.sticky-footer {
+        background: #343a40 !important;
+    }*/
+    
+}

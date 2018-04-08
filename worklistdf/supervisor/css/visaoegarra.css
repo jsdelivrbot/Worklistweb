@@ -1,0 +1,19 @@
+
+
+.textosellout{
+    background-color: #87CEFA;
+}
+
+.textodn{
+    background-color: #7FFFD4;
+}
+
+
+.select2-container--default .select2-selection--single{
+    font-weight: bold;
+}
+
+
+
+@media screen and (max-width: 767px){
+}
