@@ -100,6 +100,26 @@ require_once 'funcoes/funcoes.php';
                                         <i class="fa fa-refresh" id="btn_atualizar"></i>
                                     </div>
                                 </div>
+                                <div class="card-body">
+                                    <div  class="table-responsive dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                        <select class="js-example-responsive select_indus">
+                                            <option value="1">TODAS</option>
+                                            <?php
+                                            require_once 'classes/bd.php';
+                                            $bd = new bd();
+                                            $queryindustrias = "select distinct linha from sys_industrias";
+
+                                            $resultindustrias = pg_query($queryindustrias);
+
+                                            while ($rowindustrias = pg_fetch_array($resultindustrias)) {
+                                                echo "<option value ='" . $rowindustrias['linha'] . "'>" . $rowindustrias['linha'] . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                      
+
+                                    </div>
+                                </div>
                             </div>
                             <!-- Example DataTables Card-->
                             <div class="card mb-3">
