@@ -65,6 +65,7 @@ $erro_sql = isset($_GET['erro_sql']) ? $_GET['erro_sql'] : 0;
                                         <option value="correlatos2">Correlatos 02</option>
                                         <option value="kleyhertz">Kley Hertz</option>
                                         <option value="prospecção">prospecção</option>
+                                        <option value="geolab">Geolab</option>
                                         <option value="vago">Não Tem</option>
                                     </select>
                                 </div>
