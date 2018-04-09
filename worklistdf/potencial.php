@@ -18,7 +18,7 @@ require_once 'funcoes/funcoes.php';
         <meta name="O Worklist é um sistema de monitoramento de indicadores de vendas." content="">
         <meta name="Worknet" content="Worknet">
         <link rel="icon" href="img/favicon.png"> <!--Coloca Icone da aba do navegador-->
-        <title>Worklist - DF Distribuidora</title>
+        <title>Worklist - Potenciais</title>
         <!-- Bootstrap core CSS-->
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
