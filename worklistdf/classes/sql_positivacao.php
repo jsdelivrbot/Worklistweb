@@ -113,7 +113,6 @@ $query = "insert into sys_controleacesso (idusuario,dataacesso,telaacessada) val
 //executando a query montada acima
 $result = pg_query($query);
 
-echo $_SESSION['MES1'];
 
 ?>
 

@@ -47,3 +47,9 @@ while ($row = pg_fetch_array($result)) {
     echo "<td>" . $row['status']      . "</td>";
     echo "</tr>";
 }
+
+//montando a query para execução no banco
+$query = "insert into sys_controleacesso (idusuario,dataacesso,telaacessada) values (".$_SESSION['idrepresentante'].",current_timestamp,'atualizar')";
+
+//executando a query montada acima
+$result = pg_query($query);

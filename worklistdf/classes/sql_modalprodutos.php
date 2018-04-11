@@ -91,4 +91,11 @@ while ($row = pg_fetch_array($query)) {
 }
 echo "</tbody>";
 echo "</table>";
+
+
+//montando a query para execução no banco
+$query = "insert into sys_controleacesso (idusuario,dataacesso,telaacessada) values (".$_SESSION['idrepresentante'].",current_timestamp,'produtos')";
+
+//executando a query montada acima
+$result = pg_query($query);
 ?>

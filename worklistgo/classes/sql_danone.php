@@ -295,8 +295,13 @@ if ($profutura_cota == 0) {
     <td> <?php echo '&nbsp' . number_format($proj_gum, 0, ',', '.'); ?></td>
     <?php echo '&nbsp' . defineCor(number_format($perc_proj_gum, 2, ',', '.')); ?>
 </tr>
+<?php
+//montando a query para execução no banco
+$query = "insert into sys_controleacesso (idusuario,dataacesso,telaacessada) values (".$_SESSION['idrepresentante'].",current_timestamp,'visaoegarra')";
 
-
+//executando a query montada acima
+$result = pg_query($query);
+?>
 
 <script>
     var geralcota =<?php echo $geral_cota; ?>;

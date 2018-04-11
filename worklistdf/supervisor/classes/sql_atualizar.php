@@ -64,6 +64,8 @@ $result = pg_query($query);
 
 
 
+
+
 while ($row = pg_fetch_array($result)) {
     echo "<tr>";
     echo "<td>" . $row['representante'] . "</td>";

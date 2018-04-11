@@ -130,6 +130,13 @@ if (isset($valormeta)) {
 
     <?php
 }
+
+//montando a query para execução no banco
+$query = "insert into sys_controleacesso (idusuario,dataacesso,telaacessada) values (".$_SESSION['idrepresentante'].",current_timestamp,'potencial')";
+
+//executando a query montada acima
+$result = pg_query($query);
+
 ?>
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
