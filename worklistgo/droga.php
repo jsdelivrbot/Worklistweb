@@ -1,4 +1,4 @@
-<script src="https://rawgit.com/Lautert/helpers/master/javascript.helpers.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Lautert/helpers/javascript.helpers.js"></script>
 
 <script>
 var time = new Date();
@@ -13,6 +13,6 @@ alert(mes);
 
 </script>
 
-<script src="https://rawgit.com/Lautert/helpers/master/javascript.helpers.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Lautert/helpers/javascript.helpers.js"></script>
 
 <?php
